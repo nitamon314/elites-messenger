@@ -13,5 +13,9 @@ $(function(){
       var json = JSON.parse(data.responseText);
       $('div.timeline').prepend($(json.timeline));
     }
+      else if (status == "error") {
+        var message = JSON.parse(data.responseText);
+        $('#error-message').html(message);
+      }  
   });
 });
