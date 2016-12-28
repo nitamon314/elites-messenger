@@ -11,11 +11,17 @@ $(function(){
     // Ajaxレスポンス
     if ( status == 'success') {
       var json = JSON.parse(data.responseText);
-      $('div.timeline').prepend($(json.timeline));
+      
+      if (json.timeline) {
+        $('div.timeline').prepend($(json.timeline));
+      } else if (json.errors) {
+        $('div.alert').prepend($(json.errors));
+      }
+      
     }
-      else if (status == "error") {
-        var message = JSON.parse(data.responseText);
-        $('#error-message').html(message);
-      }  
+      // else if (status == "error") {
+      //   var message = JSON.parse(data.responseText);
+      //   $('#error-message').html(message);
+      // }  
   });
 });

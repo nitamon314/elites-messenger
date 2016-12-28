@@ -13,14 +13,16 @@ class TimelinesController < ApplicationController
     timeline = Timeline.new
     timeline.attributes = input_message_param
     timeline.user_id = current_user.id
+
     if timeline.valid?
       timeline.save!
       respond_to do |format|
         format.html do
           redirect_to action: :index
         end
-        format.json.do
+        format.json do
           html = render_to_string partial: 'timelines/timeline', layout: false, formats: :html, locals: { t: timeline }
+          render json: {timeline: html}
         end
       end
     else
@@ -31,12 +33,13 @@ class TimelinesController < ApplicationController
           redirect_to action: :index
         end
         format.json do
-          render json: flash[:alert] = timeline.errors.full_messages
+          
+          # render json: flash[:alert] = timeline.errors.full_messages
+          render json: {errors: timeline.errors.full_messages}
         end
       end
     end
-    
-  
+  end  
   def update
     timeline = Timeline.find(params[:id])
     timeline.attributes = input_message_param
